@@ -38,6 +38,16 @@ For automated hosting setup you may supply `INITIAL_ADMIN_USERNAME` and `INITIAL
 
 ## Share it with other people
 
+### Deploy this project on Vercel
+
+The root `index.js` exports the Express app for Vercel; `npm start` remains the local server command. `vercel.json` selects Express, includes the root certificate and HTML pages, and builds browser libraries into `public/vendor` for the CDN.
+
+1. In Vercel, use **Express** as the framework preset. The build command is `npm run build:vercel`; leave the output directory at its framework default.
+2. In the project's **Settings → Environment Variables**, add the private values from `.env.supabase`: `SUPABASE_URL` and `SUPABASE_DATABASE_URL`. For production, set `APP_ORIGIN=https://monthly-lucky-draw.vercel.app` (or your own HTTPS domain) and `TRUST_PROXY=1`. The prepared `.env.vercel` file can be imported privately for the Production environment. Keep it out of Git.
+3. Push the updated source to GitHub and redeploy. Environment-variable changes take effect on a new deployment. No database migration is needed again for this hosting change.
+
+The app can infer an HTTPS origin from Vercel's system environment variables when `APP_ORIGIN` is omitted. An explicit origin is recommended for the shared production domain. If configuration is missing, the function returns a setup error and writes a safe explanation to Vercel's runtime logs.
+
 The **Copy link** button copies the public page address, without admin controls. A `127.0.0.1` address works only on your own computer. For viewers on the internet, deploy the Node app to a Node hosting service or your server and set `APP_ORIGIN` to its HTTPS address. Supabase stores the data; its project URL is not the website address.
 
 The included `Dockerfile` and `render.yaml` prepare a Node deployment. Configure the private `SUPABASE_DATABASE_URL` on the host, `NODE_ENV=production`, `HOST=0.0.0.0`, and the correct HTTPS `APP_ORIGIN`. Run `npm run setup:supabase` once on that host, then start with `npm start`. Do not commit `.env` files or `.local-admin.txt` to a repository. Do not enable public access to the private database schema. Hosting is not deployed merely by creating these files; a confirmed HTTPS URL must be obtained from the chosen host.

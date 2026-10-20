@@ -16,7 +16,11 @@ export function readConfig() {
   new Intl.DateTimeFormat('en', { timeZone: timezone }).format();
   const production = process.env.NODE_ENV === 'production';
   const port = integer('PORT', 3000, 1, 65535);
-  const origin = new URL(process.env.APP_ORIGIN || `http://127.0.0.1:${port}`);
+  const vercel = process.env.VERCEL === '1';
+  const vercelHost = vercel && (process.env.VERCEL_ENV === 'production'
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+    : process.env.VERCEL_URL);
+  const origin = new URL(process.env.APP_ORIGIN || (vercelHost ? `https://${vercelHost}` : `http://127.0.0.1:${port}`));
   if (origin.pathname !== '/' || origin.search || origin.hash || origin.username || origin.password) {
     throw new Error('APP_ORIGIN must be an origin such as https://draw.example.com.');
   }
@@ -24,7 +28,7 @@ export function readConfig() {
   return {
     production, port, timezone, origin: origin.origin,
     host: process.env.HOST || (production ? '0.0.0.0' : '127.0.0.1'),
-    trustProxy: integer('TRUST_PROXY', 0, 0, 1),
+    trustProxy: integer('TRUST_PROXY', vercel ? 1 : 0, 0, 1),
     liveDraws: true,
     supabaseUrl: process.env.SUPABASE_URL || '',
     supabaseDatabaseUrl: process.env.SUPABASE_DATABASE_URL || '',

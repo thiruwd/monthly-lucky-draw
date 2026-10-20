@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node src/server.js",
+    "build:vercel": "node scripts/build-vercel.js",
     "dev": "node --watch src/server.js",
     "connect:supabase": "node scripts/connect-supabase.js",
     "setup:supabase": "node scripts/setup-supabase.js",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.10",
+    "supabase": "^2.121.0",
     "supertest": "^7.1.4",
     "vitest": "^5.0.5"
   }
