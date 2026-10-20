@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142b29">
+  <meta name="description" content="A fair monthly draw, a room full of possibilities. Manage participants and celebrate every winner.">
+  <title>Monthly Lucky Draw · The Draw Room</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script defer src="/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+  <script defer src="/vendor/confetti/confetti.browser.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <section id="login-view" class="login-view" aria-labelledby="login-title">
+    <div class="login-story">
+      <a class="brand" href="/" aria-label="The Draw Room home"><span class="brand-mark">✳</span><span>the draw room<span class="brand-sub">A LITTLE LUCK GOES A LONG WAY</span></span></a>
+      <div class="login-headline"><span class="eyebrow">SOMETHING GOOD IS COMING</span><h1>One spin.<br>A new reason<br>to celebrate<span>.</span></h1><p>Bring your community together, one lucky moment at a time.</p></div>
+      <div class="story-orbit" aria-hidden="true"><div class="orbit-center">✳</div><span>EVERYONE GETS THEIR MOMENT</span></div>
+      <p class="story-foot">A fresh start, every month.</p>
+    </div>
+    <div class="login-form-wrap">
+      <div class="login-form-inner">
+        <span class="login-badge">ADMINISTRATOR ACCESS</span>
+        <h2 id="login-title">Welcome to the draw room.</h2>
+        <p class="muted">Sign in to manage your participants and start the celebration.</p>
+        <form id="login-form">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-control" id="username" name="username" autocomplete="username" maxlength="80" required autofocus>
+          <label class="form-label mt-4" for="password">Password</label>
+          <input class="form-control" id="password" name="password" type="password" autocomplete="current-password" maxlength="256" required>
+          <p id="login-error" class="form-error mt-3" role="alert"></p>
+          <button class="btn btn-primary w-100 login-submit" type="submit" id="login-submit">Enter the draw room <span aria-hidden="true">↗</span></button>
+        </form>
+        <p class="login-help">Need access? Ask the person who manages your draw.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="dashboard" class="app-shell" hidden>
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="The Draw Room home"><span class="brand-mark">✳</span><span>the draw room<span class="brand-sub">MAKE SOMEONE'S MONTH</span></span></a>
+      <span class="nav-label">WORKSPACE</span>
+      <nav>
+        <a href="#main" class="nav-item active"><span aria-hidden="true">◉</span> Draw dashboard <span class="nav-dot"></span></a>
+        <a href="#records" class="nav-item" id="nav-participants"><span aria-hidden="true">♧</span> Participants</a>
+        <a href="#records" class="nav-item" id="nav-history"><span aria-hidden="true">☆</span> Winner history</a>
+      </nav>
+      <div class="sidebar-note"><span class="note-star" aria-hidden="true">✧</span><h3>New month.<br>New possibilities.</h3><p>Every active participant gets a fresh chance each month.</p><span class="note-line"></span></div>
+      <div class="sidebar-footer"><span class="connection-dot"></span> Your monthly moment</div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar"><span class="breadcrumb-label">Workspace <span>/</span> <strong>Draw dashboard</strong></span><div class="topbar-account"><span id="admin-name"></span><span class="avatar" aria-hidden="true" id="admin-avatar">A</span><button id="logout" class="icon-button" title="Sign out" aria-label="Sign out">↪</button></div></header>
+      <main id="main" class="main-content">
+        <div class="page-heading"><div><span class="eyebrow">GOOD THINGS START HERE</span><h1>Monthly lucky draw<span class="heading-spark" aria-hidden="true">✳</span></h1><p>A fair chance for everyone. A special moment for someone.</p></div><div class="period-pill"><span class="period-icon" aria-hidden="true">▦</span><div><span>THIS MONTH'S DRAW</span><strong id="period-label">Loading…</strong></div></div></div>
+        <div id="global-error" class="alert alert-danger" role="alert" hidden></div>
+        <section class="stats-grid" aria-label="Draw statistics">
+          <article class="stat-card"><span class="stat-icon peach" aria-hidden="true">♧</span><div><p>Total participants</p><strong id="total-count">—</strong><span>in your community</span></div></article>
+          <article class="stat-card"><span class="stat-icon mint" aria-hidden="true">✓</span><div><p>Active participants</p><strong id="active-count">—</strong><span>ready for this month</span></div></article>
+          <article class="stat-card"><span class="stat-icon lavender" aria-hidden="true">◴</span><div><p>Still in the running</p><strong id="remaining-count">—</strong><span>chances to celebrate</span></div></article>
+          <article class="stat-card"><span class="stat-icon butter" aria-hidden="true">☆</span><div><p>This month's winners</p><strong id="winner-count">—</strong><span>lucky moments so far</span></div></article>
+        </section>
+
+        <div class="draw-grid">
+          <section class="panel wheel-panel" aria-labelledby="wheel-title">
+            <div class="panel-heading"><div><h2 id="wheel-title">Let luck take a spin</h2><p>Your next winner is just a spin away.</p></div><span class="live-pill"><span></span> MONTHLY DRAW</span></div>
+            <div class="wheel-stage"><span class="wheel-spark spark-one" aria-hidden="true">✦</span><span class="wheel-spark spark-two" aria-hidden="true">✧</span><span class="wheel-spark spark-three" aria-hidden="true">✦</span><div class="wheel-frame"><div class="wheel-pointer" aria-hidden="true"></div><canvas id="wheel" width="640" height="640" role="img" aria-label="Lucky draw wheel. Eligible participant names are listed below."></canvas><div class="wheel-hub" aria-hidden="true">✳</div></div></div>
+            <div class="wheel-actions"><p id="wheel-message" role="status" aria-live="polite">Loading this month's participants…</p><button id="spin-button" class="btn btn-primary spin-button" disabled><span aria-hidden="true">✳</span> Spin the wheel <span aria-hidden="true">↗</span></button><p class="fairness-note"><span aria-hidden="true">♧</span> One win per person, per month. Equal chances for everyone.</p></div>
+            <details class="eligible-details"><summary id="eligible-summary">View eligible participants</summary><ul id="eligible-list"></ul></details>
+          </section>
+
+          <aside class="draw-aside">
+            <section class="winner-card" aria-labelledby="latest-winner-title"><span class="eyebrow">A MOMENT WORTH CELEBRATING</span><span class="winner-star" aria-hidden="true">✧</span><h2 id="latest-winner-title">The lucky spotlight</h2><div class="winner-medal" aria-hidden="true">☆</div><strong id="latest-winner">Your next winner awaits</strong><p id="latest-winner-date">Give the wheel a spin to make someone's day.</p><span class="winner-card-foot">A LITTLE LUCK. A BIG SMILE.</span></section>
+            <section class="panel running-panel"><div class="panel-heading"><h2>In the running</h2><span id="queue-count" class="count-badge">0</span></div><ul id="participant-queue" class="participant-queue"></ul><p id="queue-more" class="queue-more"></p></section>
+          </aside>
+        </div>
+
+        <section id="records" class="panel records-panel" aria-label="Participant and winner records">
+          <div class="records-heading"><div class="record-tabs" role="tablist" aria-label="Records"><button id="tab-members" role="tab" aria-controls="members-panel" aria-selected="true" class="record-tab active">Participants <span id="members-tab-count">0</span></button><button id="tab-history" role="tab" aria-controls="history-panel" aria-selected="false" tabindex="-1" class="record-tab">Winner history</button></div><button id="refresh-button" class="text-button" title="Refresh dashboard">↻ <span>Refresh</span></button></div>
+          <div id="members-panel" role="tabpanel" aria-labelledby="tab-members">
+            <div class="table-toolbar"><div><h2>Your community</h2><p>A seat at the wheel for every active participant.</p></div><div class="table-tools"><label class="search-field"><span aria-hidden="true">⌕</span><input id="member-search" type="search" placeholder="Search participants…" aria-label="Search participants"></label><button id="add-member" class="btn btn-primary btn-small">+ Add participant</button></div></div>
+            <div class="table-responsive"><table class="table align-middle records-table"><thead><tr><th scope="col">PARTICIPANT</th><th scope="col">MEMBER CODE</th><th scope="col">STATUS</th><th scope="col">THIS MONTH</th><th scope="col" class="text-end">ACTIONS</th></tr></thead><tbody id="members-body"></tbody></table></div>
+            <p id="member-table-note" class="table-note"></p>
+          </div>
+          <div id="history-panel" role="tabpanel" aria-labelledby="tab-history" hidden>
+            <div class="table-toolbar"><div><h2>Every lucky moment</h2><p>A lasting record of the people we've celebrated.</p></div><label class="history-filter">Show <select id="history-scope" class="form-select"><option value="current">This month</option><option value="all">All months</option></select></label></div>
+            <div class="table-responsive"><table class="table align-middle records-table"><thead><tr><th scope="col">WINNER</th><th scope="col">DRAW DATE</th><th scope="col">MONTH</th><th scope="col">YEAR</th></tr></thead><tbody id="history-body"></tbody></table></div>
+            <div class="history-pagination"><span id="history-note" class="table-note"></span><div><button id="history-prev" class="text-button">← Previous</button><button id="history-next" class="text-button">Next →</button></div></div>
+          </div>
+        </section>
+        <footer class="page-footer"><span>Made for little moments of joy.</span><span id="timezone-label"></span></footer>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal fade" id="member-modal" tabindex="-1" aria-labelledby="member-modal-title" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><div><span class="eyebrow">GROW THE CIRCLE</span><h2 class="modal-title" id="member-modal-title">Add participant</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><form id="member-form"><div class="modal-body"><input type="hidden" id="member-id"><label for="member-name" class="form-label">Full name <span aria-hidden="true">*</span></label><input id="member-name" class="form-control" maxlength="150" required autocomplete="name"><div class="row mt-3 g-3"><div class="col-sm-6"><label for="member-code" class="form-label">Member code <span class="optional">optional</span></label><input id="member-code" class="form-control" maxlength="50" pattern="[A-Za-z0-9._\-]+" placeholder="e.g. MEM-001"></div><div class="col-sm-6"><label for="member-email" class="form-label">Email <span class="optional">optional</span></label><input id="member-email" class="form-control" type="email" maxlength="255" autocomplete="email"></div></div><div class="form-check form-switch mt-4"><input id="member-active" class="form-check-input" type="checkbox" role="switch" checked><label class="form-check-label" for="member-active">Active and eligible for monthly draws</label></div><p id="member-error" class="form-error mt-3" role="alert"></p></div><div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button id="save-member" class="btn btn-primary" type="submit">Save participant</button></div></form></div></div></div>
+  <div id="toast-message" class="app-toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

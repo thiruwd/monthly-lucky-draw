@@ -1,0 +1,46 @@
+{
+  "name": "monthly-lucky-draw",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A shared live lucky draw with a private admin dashboard and Supabase history.",
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "connect:supabase": "node scripts/connect-supabase.js",
+    "setup:supabase": "node scripts/setup-supabase.js",
+    "preview:simple": "node scripts/preview-simple.js",
+    "db:migrate": "node scripts/setup-supabase.js",
+    "admin:create": "node scripts/create-admin.js",
+    "db:seed": "node scripts/seed-supabase.js",
+    "setup:local": "node scripts/setup-supabase.js",
+    "preview:test": "node scripts/preview-simple.js",
+    "test": "vitest run --exclude tests/mysql.integration.test.js",
+    "test:watch": "vitest --exclude tests/mysql.integration.test.js",
+    "test:mysql": "vitest run tests/mysql.integration.test.js",
+    "check": "node scripts/check.js"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
+    "bootstrap": "^5.3.8",
+    "canvas-confetti": "^1.9.4",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "mysql2": "^3.15.3",
+    "pg": "^8.23.1",
+    "sweetalert2": "^11.26.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "supertest": "^7.1.4",
+    "vitest": "^5.0.5"
+  }
+}
